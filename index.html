@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¡Mates Divertidas! - Magia con Fracciones</title>
+    <link rel="manifest" href="manifest.json">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+    <div id="confeti-container" aria-hidden="true"></div>
+
+    <!-- Barra Superior -->
+    <header class="top-bar">
+        <button class="menu-toggle" onclick="toggleMenu()" aria-label="Abrir menú">☰</button>
+        <div class="progreso-contenedor" aria-label="Barra de progreso">
+            <div id="barra-progreso" class="barra-progreso"></div>
+        </div>
+        <div class="indicadores-container">
+            <div class="racha-display" id="mi-racha" title="Días seguidos estudiando">🔥 0</div>
+            <div class="medallas-display" id="mis-medallas">🏆 0</div>
+            <div class="monedas-display" id="mis-monedas" title="Tus Mates-Monedas">🪙 0</div>
+            
+            <button class="btn-perfil" onclick="abrirTienda()">🛒 Tienda</button>
+            <button class="btn-perfil btn-entrar" onclick="abrirPerfil()" id="btn-usuario">👤 Entrar</button>
+            <button class="btn-darkmode" onclick="toggleDarkMode()">🌙</button>
+        </div>
+    </header>
+
+    <!-- Modales de Perfil y Tienda -->
+    <div id="modal-perfil" class="modal oculto">
+        <div class="modal-contenido">
+            <h2>☁️ Guardar en la Nube</h2>
+            <p>Crea tu perfil para guardar tu progreso.</p>
+            <input type="text" id="nombre-usuario" placeholder="Tu nombre o apodo" maxlength="15"><br><br>
+            <button class="btn" onclick="guardarPerfil()">Guardar Perfil</button>
+            <button class="btn btn-cerrar" onclick="cerrarModal('modal-perfil')">Cerrar</button>
+        </div>
+    </div>
+
+    <div id="modal-tienda" class="modal oculto">
+        <div class="modal-contenido">
+            <h2>🛒 Tienda del Búho</h2>
+            <div class="grid-3" id="productos-tienda"></div><br>
+            <button class="btn btn-cerrar" onclick="cerrarModal('modal-tienda')">Salir de la Tienda</button>
+        </div>
+    </div>
+
+    <!-- Tutor Virtual Animado -->
+    <div id="tutor-container">
+        <div id="tutor-burbuja" class="burbuja-oculta">¡Hola! Soy tu tutor búho. 🦉</div>
+        <div id="tutor-avatar-container" onclick="saludarTutor()">
+            <div id="tutor-avatar">🦉</div>
+            <div id="tutor-accesorio" class="accesorio"></div>
+        </div>
+    </div>
+
+    <!-- Menú Lateral -->
+    <nav class="sidebar" id="sidebar">
+        <div class="logo-menu">🚀 Mates<br>Divertidas</div>
+        <a onclick="mostrarSeccion('inicio')" class="menu-item active-menu">🏠 Inicio</a>
+        <a onclick="mostrarSeccion('nosotros')" class="menu-item">🌟 Nosotros</a>
+        <a onclick="mostrarSeccion('fracciones')" class="menu-item">🍕 ¿Qué son?</a>
+        <a onclick="mostrarSeccion('tipos')" class="menu-item">🏷️ Tipos</a>
+        <a onclick="mostrarSeccion('suma')" class="menu-item">➕ Suma</a>
+        <a onclick="mostrarSeccion('resta')" class="menu-item">➖ Resta</a>
+        <a onclick="mostrarSeccion('multiplicacion')" class="menu-item">✖️ Multiplicación</a>
+        <a onclick="mostrarSeccion('division')" class="menu-item">➗ División</a>
+        <a onclick="mostrarSeccion('videos')" class="menu-item">📺 Cine Matemático</a>
+        <a onclick="mostrarSeccion('juegos')" class="menu-item pulse-menu">🎮 ¡Juega Aquí!</a>
+        <a onclick="mostrarSeccion('encuesta')" class="menu-item">📝 Encuesta</a>
+    </nav>
+
+    <!-- Contenido Principal -->
+    <main class="content">
+        
+        <!-- SECCIÓN: INICIO -->
+        <section id="inicio" class="active">
+            <h1 class="titulo-flotante">¡Hola! Descubre la magia de los números ✨</h1>
+            <div class="tarjeta-destacada text-center">
+                <h3>¡Bienvenido a tu aventura matemática! 🗺️</h3>
+                <p>Aprender fracciones es como aprender a compartir una pizza con tus amigos. Hoy te enseñaremos los trucos más fáciles y divertidos para que te conviertas en un maestro de los números.</p>
+                <img src="https://cdn-icons-png.flaticon.com/512/3070/3070433.png" alt="Niño estudiando" style="width: 150px; margin: 20px auto; display: block;">
+            </div>
+            <div style="text-align: center;">
+                <button class="btn btn-grande" onclick="mostrarSeccion('fracciones')">¡Comenzar a Aprender! 🚀</button>
+            </div>
+        </section>
+
+        <!-- SECCIÓN: NOSOTROS (CREADORES) -->
+        <section id="nosotros">
+            <h1 class="titulo-flotante text-center">🌟 Conócenos – Creadores de Mates Divertidas 📚➗</h1>
+            
+            <div class="tarjeta-destacada text-center">
+                <img src="nosotros.jpg" alt="Creadores de Mates Divertidas" class="img-nosotros">
+                <p class="mt-20">
+                    Somos un equipo interdisciplinario que decidió unir nuestras diferentes formas de aprender, enseñar y ver la educación para crear <strong>Mates Divertidas</strong>: una página educativa pensada especialmente para estudiantes de quinto grado, donde aprender matemáticas, y en especial las fracciones, se convierta en una experiencia más dinámica, sencilla y divertida.
+                </p>
+            </div>
+
+            <div class="mt-30">
+                <div class="creador-card border-politica">
+                    <div class="creador-header">
+                        <h3>⚖️ María de Los Ángeles Sáenz Villanueva</h3>
+                        <span class="creador-tag tag-politica">Ciencia Política</span>
+                    </div>
+                    <p>
+                        Soy estudiante de Ciencia Política de la Universidad Surcolombiana y me caracterizo por ser una persona responsable, comprometida, creativa y muy interesada en hacer las cosas de la mejor manera. Me gusta trabajar en equipo, aportar ideas y buscar que los proyectos tengan un propósito y puedan generar algo positivo en los demás. Desde mi formación, aporto una mirada crítica, social y reflexiva a nuestro proyecto, entendiendo la educación como un espacio para aprender, participar y construir conocimiento de una manera diferente. En Mates Divertidas encontré la oportunidad de combinar mi creatividad y mi interés por la educación con una propuesta que permita que los niños se acerquen a las matemáticas sin verlas como algo aburrido o complicado.
+                    </p>
+                </div>
+
+                <div class="creador-card border-naturales">
+                    <div class="creador-header">
+                        <h3>🔬 Francy Eliana Barrero Barrera</h3>
+                        <span class="creador-tag tag-naturales">Ciencias Naturales</span>
+                    </div>
+                    <p>
+                        Tengo 35 años, soy Normalista Superior y Licenciada en Ciencias Naturales: Física, Química y Biología de la Universidad Surcolombiana. Mi formación y experiencia me han permitido desarrollar un especial interés por los procesos de enseñanza y aprendizaje, buscando siempre que los estudiantes puedan comprender los contenidos de una manera clara, práctica y significativa. En Mates Divertidas aporto mi mirada pedagógica y mi experiencia en el campo educativo para transformar las matemáticas en una experiencia cercana, creativa y agradable para los estudiantes de quinto grado.
+                    </p>
+                </div>
+
+                <div class="creador-card border-deportes">
+                    <div class="creador-header">
+                        <h3>⚽ Juan Felipe Peña</h3>
+                        <span class="creador-tag tag-deportes">Educación Física y Deportes</span>
+                    </div>
+                    <p>
+                        Soy estudiante de Educación Física, Recreación y Deportes, deportista, emprendedor, disciplinado y una persona que disfruta asumir nuevos retos con una actitud tranquila y positiva. Me caracterizo por ser activo, dinámico, perseverante y por creer que aprender también puede hacerse jugando, experimentando y disfrutando el proceso. Desde mi formación aporto al proyecto una perspectiva lúdica y dinámica, buscando que Mates Divertidas no sea solamente una página para aprender fracciones, sino un espacio donde los estudiantes puedan participar, divertirse, interactuar y descubrir que las matemáticas también pueden moverse al ritmo de ellos.
+                    </p>
+                </div>
+            </div>
+
+            <div class="tarjeta-destacada mt-30" style="border-left: 6px solid #f1c40f; text-align: left;">
+                <h2 style="color: #f39c12; margin-top: 0;">🧮✨ ¿Qué es Mates Divertidas?</h2>
+                <p>
+                    Mates Divertidas nace de la unión de tres áreas diferentes: <strong>Ciencia Política, Ciencias Naturales y Educación Física</strong>, demostrando que cuando diferentes conocimientos se encuentran, pueden surgir ideas increíbles. Nuestra propuesta está enfocada en el tema de fracciones para grado quinto, utilizando recursos creativos, dinámicos y cercanos a los estudiantes para que comprendan que una fracción no tiene por qué ser difícil: puede aprenderse jugando, explorando y divirtiéndose.
+                </p>
+                <p style="font-weight: bold; color: var(--text-highlight); text-align: center; margin-top: 15px; font-size: 20px;">
+                    Somos tres creadores, tres formas de aprender y una misma misión: convertir las matemáticas en una experiencia divertida. 🧮💙➗✨
+                </p>
+            </div>
+        </section>
+
+        <!-- 1. QUÉ SON LAS FRACCIONES -->
+        <section id="fracciones">
+            <h1 class="titulo-animado">🍕 ¿Qué son las Fracciones?</h1>
+            <p>Imagina que tienes una pizza deliciosa. Si la cortas en pedazos iguales para compartir, ¡estás usando fracciones! Una fracción es simplemente <strong>una parte de algo más grande</strong>.</p>
+            
+            <div class="tarjeta-destacada flex-center">
+                <div class="fraccion-interactiva grande">
+                    <div class="numerador c-rojo">3</div>
+                    <div class="linea"></div>
+                    <div class="denominador c-azul">4</div>
+                </div>
+                <div class="explicacion-partes">
+                    <div class="parte-info">
+                        <span class="punto-color bg-rojo"></span>
+                        <p><strong>El número de ARRIBA (Numerador):</strong> <br>Te dice cuántos pedazos te vas a comer.</p>
+                    </div>
+                    <div class="parte-info">
+                        <span class="punto-color bg-azul"></span>
+                        <p><strong>El número de ABAJO (Denominador):</strong> <br>Te dice en cuántos pedazos iguales cortaste toda la pizza.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. TIPOS DE FRACCIONES -->
+        <section id="tipos">
+            <h1>🏷️ La Familia de las Fracciones</h1>
+            <p>Las fracciones tienen diferentes personalidades. ¡Vamos a conocerlas!</p>
+            
+            <div class="grid-3">
+                <div class="tarjeta-tipo border-verde">
+                    <h3>😊 Propias</h3>
+                    <p>Son las bien portadas. El número de arriba es <strong>menor</strong> que el de abajo.</p>
+                    <div class="fraccion-mini"><span class="c-rojo">1</span><hr><span class="c-azul">2</span></div>
+                    <p><em>(Es menos que una pizza entera)</em></p>
+                </div>
+                <div class="tarjeta-tipo border-rojo">
+                    <h3>🤯 Impropias</h3>
+                    <p>Son muy tragonas. El número de arriba es <strong>mayor</strong> que el de abajo.</p>
+                    <div class="fraccion-mini"><span class="c-rojo">5</span><hr><span class="c-azul">4</span></div>
+                    <p><em>(¡Necesitas más de una pizza para comerte 5 pedazos!)</em></p>
+                </div>
+                <div class="tarjeta-tipo border-amarillo">
+                    <h3>🤝 Mixtas</h3>
+                    <p>Tienen un número grande (entero) abrazado a una fracción pequeña.</p>
+                    <div class="fraccion-mixta"><strong>1</strong> <div class="f-lado"><span class="c-rojo">1</span><hr><span class="c-azul">2</span></div></div>
+                    <p><em>(Una pizza entera y media más)</em></p>
+                </div>
+            </div>
+
+            <div class="tarjeta-destacada mt-30">
+                <h3 class="subtitulo-color text-center">📺 Video Explicativo: Tipos de Fracciones</h3>
+                <div class="video-container">
+                    <iframe 
+                        src="https://www.youtube-nocookie.com/embed/7Xvlv3SCA4c" 
+                        title="Tipos de Fracciones - Daniel Carreón" 
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                        referrerpolicy="strict-origin-when-cross-origin" 
+                        allowfullscreen>
+                    </iframe>
+                </div>
+                <div style="text-align: center; margin-top: 10px;">
+                    <a href="https://www.youtube.com/watch?v=7Xvlv3SCA4c" target="_blank" rel="noopener noreferrer" class="btn" style="font-size: 14px; text-decoration: none; display: inline-block;">Ver directo en YouTube ↗</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. SUMA -->
+        <section id="suma">
+            <h1 class="titulo-flotante">➕ Suma de Fracciones</h1>
+            
+            <h3 class="subtitulo-color">Caso 1: Cuando el de abajo es IGUAL 🟢</h3>
+            <div class="tarjeta-pasos">
+                <p>¡Este es el caso más fácil del mundo! Si los denominadores (los azules) son iguales, son hermanos.</p>
+                <div class="pasos-grid">
+                    <div class="paso-box">
+                        <div class="paso-num">1</div>
+                        <p>Suma solo los números de arriba (los rojos).</p>
+                    </div>
+                    <div class="paso-box">
+                        <div class="paso-num">2</div>
+                        <p>Deja el número de abajo exactamente igual.</p>
+                    </div>
+                </div>
+                <div class="ejemplo-visual">
+                    <div class="f-inline"><span class="c-rojo">1</span><hr><span class="c-azul">5</span></div>
+                    <span>+</span>
+                    <div class="f-inline"><span class="c-rojo">2</span><hr><span class="c-azul">5</span></div>
+                    <span>=</span>
+                    <div class="f-inline"><span class="c-rojo">3</span><hr><span class="c-azul">5</span></div>
+                </div>
+
+                <div class="video-container mt-20">
+                    <iframe 
+                        src="https://www.youtube-nocookie.com/embed/antZqj9ePys" 
+                        title="Suma Igual Denominador - Daniel Carreón" 
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                        referrerpolicy="strict-origin-when-cross-origin" 
+                        allowfullscreen>
+                    </iframe>
+                </div>
+                <div style="text-align: center; margin-top: 10px;">
+                    <a href="https://www.youtube.com/watch?v=antZqj9ePys" target="_blank" rel="noopener noreferrer" class="btn" style="font-size: 14px; text-decoration: none; display: inline-block;">Ver directo en YouTube ↗</a>
+                </div>
+            </div>
+
+            <h3 class="subtitulo-color mt-30">Caso 2: Cuando el de abajo es DIFERENTE 🟡</h3>
+            <div class="tarjeta-pasos">
+                <p>Aquí usamos el truco mágico de multiplicar cruzado.</p>
+                <div class="pasos-grid tres-cols">
+                    <div class="paso-box">
+                        <div class="paso-num">1</div>
+                        <p><strong>Los de abajo:</strong> Multiplica los dos de abajo para encontrar uno nuevo.</p>
+                    </div>
+                    <div class="paso-box">
+                        <div class="paso-num">2</div>
+                        <p><strong>El cruce:</strong> Multiplica el de arriba por el de abajo del vecino (como una "X").</p>
+                    </div>
+                    <div class="paso-box">
+                        <div class="paso-num">3</div>
+                        <p><strong>El final:</strong> Suma los resultados de arriba y ¡listo!</p>
+                    </div>
+                </div>
+                <div class="ejemplo-visual grande">
+                    <p>Ejemplo: <strong>1/3 + 1/4</strong></p>
+                    <p>Abajo: 3 × 4 = <strong>12</strong></p>
+                    <p>Arriba en X: (1 × 4) + (1 × 3) = 4 + 3 = <strong>7</strong></p>
+                    <p>Resultado: <strong>7/12</strong></p>
+                </div>
+
+                <div class="video-container mt-20">
+                    <iframe 
+                        src="https://www.youtube-nocookie.com/embed/LVHo5xvsvO0" 
+                        title="Suma Diferente Denominador - Daniel Carreón" 
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                        referrerpolicy="strict-origin-when-cross-origin" 
+                        allowfullscreen>
+                    </iframe>
+                </div>
+                <div style="text-align: center; margin-top: 10px;">
+                    <a href="https://www.youtube.com/watch?v=LVHo5xvsvO0" target="_blank" rel="noopener noreferrer" class="btn" style="font-size: 14px; text-decoration: none; display: inline-block;">Ver directo en YouTube ↗</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. RESTA -->
+        <section id="resta">
+            <h1 class="titulo-flotante">➖ Resta de Fracciones</h1>
+            
+            <h3 class="subtitulo-color">Caso 1: Cuando el de abajo es IGUAL 🟢</h3>
+            <div class="tarjeta-destacada">
+                <p>Cuando el número de abajo es el mismo, solo restas los números de arriba y el denominador se queda exactamente igual.</p>
+                <div class="ejemplo-visual">
+                    <div class="f-inline"><span class="c-rojo">5</span><hr><span class="c-azul">8</span></div>
+                    <span>-</span>
+                    <div class="f-inline"><span class="c-rojo">2</span><hr><span class="c-azul">8</span></div>
+                    <span>=</span>
+                    <div class="f-inline"><span class="c-rojo">3</span><hr><span class="c-azul">8</span></div>
+                </div>
+                <p style="text-align:center; color:#7f8c8d;"><em>(Solo restamos: a 5 le quito 2 = 3, y el 8 se queda igual).</em></p>
+
+                <div class="video-container mt-20">
+                    <iframe 
+                        src="https://www.youtube-nocookie.com/embed/EgTV5pj6Ijg" 
+                        title="Resta Igual Denominador - Daniel Carreón" 
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                        referrerpolicy="strict-origin-when-cross-origin" 
+                        allowfullscreen>
+                    </iframe>
+                </div>
+                <div style="text-align: center; margin-top: 10px;">
+                    <a href="https://www.youtube.com/watch?v=EgTV5pj6Ijg" target="_blank" rel="noopener noreferrer" class="btn" style="font-size: 14px; text-decoration: none; display: inline-block;">Ver directo en YouTube ↗</a>
+                </div>
+            </div>
+
+            <h3 class="subtitulo-color mt-30">Caso 2: Cuando el de abajo es DIFERENTE 🟡</h3>
+            <div class="tarjeta-pasos">
+                <p>Multiplicamos los denominadores y hacemos el cruce en "X", pero restamos los resultados superiores:</p>
+                <div class="ejemplo-visual grande">
+                    <p>Ejemplo: <strong>6/7 - 1/5</strong></p>
+                    <p>Abajo: 7 × 5 = <strong>35</strong></p>
+                    <p>Arriba en X: (6 × 5) - (7 × 1) = 30 - 7 = <strong>23</strong></p>
+                    <p>Resultado: <strong>23/35</strong></p>
+                </div>
+
+                <div class="video-container mt-20">
+                    <iframe 
+                        src="https://www.youtube-nocookie.com/embed/FRPijN0ie3U" 
+                        title="Resta Diferente Denominador - Daniel Carreón" 
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                        referrerpolicy="strict-origin-when-cross-origin" 
+                        allowfullscreen>
+                    </iframe>
+                </div>
+                <div style="text-align: center; margin-top: 10px;">
+                    <a href="https://www.youtube.com/watch?v=FRPijN0ie3U" target="_blank" rel="noopener noreferrer" class="btn" style="font-size: 14px; text-decoration: none; display: inline-block;">Ver directo en YouTube ↗</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. MULTIPLICACIÓN -->
+        <section id="multiplicacion">
+            <h1 class="titulo-flotante">✖️ Multiplicación</h1>
+            <h3 class="subtitulo-color">El viaje en línea recta 🚂</h3>
+            <div class="tarjeta-pasos">
+                <p>De todas las operaciones, ¡esta es la más directa y fácil! Imagina que es un tren que viaja recto por sus rieles.</p>
+                <div class="pasos-grid">
+                    <div class="paso-box bg-suave-rojo">
+                        <div class="paso-num">1</div>
+                        <p>Multiplica el número de <strong>arriba por el de arriba</strong>.</p>
+                    </div>
+                    <div class="paso-box bg-suave-azul">
+                        <div class="paso-num">2</div>
+                        <p>Multiplica el número de <strong>abajo por el de abajo</strong>.</p>
+                    </div>
+                </div>
+                <div class="ejemplo-visual grande">
+                    <div class="f-inline"><span class="c-rojo">2</span><hr><span class="c-azul">3</span></div>
+                    <span>×</span>
+                    <div class="f-inline"><span class="c-rojo">4</span><hr><span class="c-azul">5</span></div>
+                    <span>=</span>
+                    <div class="f-inline"><span class="c-rojo">8</span><hr><span class="c-azul">15</span></div>
+                </div>
+
+                <div class="video-container mt-20">
+                    <iframe 
+                        src="https://www.youtube-nocookie.com/embed/-ytm1uOGOXk" 
+                        title="Multiplicación de Fracciones - Daniel Carreón" 
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                        referrerpolicy="strict-origin-when-cross-origin" 
+                        allowfullscreen>
+                    </iframe>
+                </div>
+                <div style="text-align: center; margin-top: 10px;">
+                    <a href="https://www.youtube.com/watch?v=-ytm1uOGOXk" target="_blank" rel="noopener noreferrer" class="btn" style="font-size: 14px; text-decoration: none; display: inline-block;">Ver directo en YouTube ↗</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. DIVISIÓN -->
+        <section id="division">
+            <h1 class="titulo-flotante">➗ División</h1>
+            <h3 class="subtitulo-color">El truco de la pelota que rebota 🏓</h3>
+            <div class="tarjeta-pasos">
+                <p>Para dividir usamos una <strong>multiplicación que rebota</strong> (en zigzag o cruzada).</p>
+                <div class="pasos-grid">
+                    <div class="paso-box">
+                        <div class="paso-num">1</div>
+                        <p><strong>Primer rebote:</strong> El de <em>arriba</em> se multiplica por el de <em>abajo</em>... ¡y el resultado rebota hacia <strong>arriba</strong>!</p>
+                    </div>
+                    <div class="paso-box">
+                        <div class="paso-num">2</div>
+                        <p><strong>Segundo rebote:</strong> El de <em>abajo</em> se multiplica por el de <em>arriba</em>... ¡y el resultado rebota hacia <strong>abajo</strong>!</p>
+                    </div>
+                </div>
+                <div class="ejemplo-visual grande" style="background:#e8f8f5; border: 2px dashed #1abc9c;">
+                    <p>Ejemplo: <strong>1/2 ÷ 3/4</strong></p>
+                    <p>Arriba: 1 × 4 = <strong>4</strong> <em>(Rebota arriba)</em></p>
+                    <p>Abajo: 2 × 3 = <strong>6</strong> <em>(Rebota abajo)</em></p>
+                    <p>Resultado: <strong>4/6</strong></p>
+                </div>
+
+                <div class="video-container mt-20">
+                    <iframe 
+                        src="https://www.youtube-nocookie.com/embed/4Q2lLy3pzrI" 
+                        title="División de Fracciones - Daniel Carreón" 
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                        referrerpolicy="strict-origin-when-cross-origin" 
+                        allowfullscreen>
+                    </iframe>
+                </div>
+                <div style="text-align: center; margin-top: 10px;">
+                    <a href="https://www.youtube.com/watch?v=4Q2lLy3pzrI" target="_blank" rel="noopener noreferrer" class="btn" style="font-size: 14px; text-decoration: none; display: inline-block;">Ver directo en YouTube ↗</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 7. VIDEOS (CINE MATEMÁTICO) -->
+        <section id="videos">
+            <h1 class="titulo-flotante text-center">📺 Cine Matemático</h1>
+            <p class="text-center">¡Prepara las palomitas! 🍿 Aquí tienes todos los videos reunidos para repasar cuando quieras.</p>
+
+            <div class="grid-2 mt-30">
+                <div class="tarjeta-destacada">
+                    <h3 class="subtitulo-color text-center">✨ Tipos de Fracciones</h3>
+                    <div class="video-container">
+                        <iframe src="https://www.youtube-nocookie.com/embed/7Xvlv3SCA4c" title="Tipos de Fracciones" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                    </div>
+                    <div style="text-align: center; margin-top: 10px;">
+                        <a href="https://www.youtube.com/watch?v=7Xvlv3SCA4c" target="_blank" rel="noopener noreferrer" class="btn" style="font-size: 13px; text-decoration: none; display: inline-block;">Ver en YouTube ↗</a>
+                    </div>
+                </div>
+
+                <div class="tarjeta-destacada">
+                    <h3 class="subtitulo-color text-center">➕ Suma Igual Denominador</h3>
+                    <div class="video-container">
+                        <iframe src="https://www.youtube-nocookie.com/embed/antZqj9ePys" title="Suma Igual Denominador" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                    </div>
+                    <div style="text-align: center; margin-top: 10px;">
+                        <a href="https://www.youtube.com/watch?v=antZqj9ePys" target="_blank" rel="noopener noreferrer" class="btn" style="font-size: 13px; text-decoration: none; display: inline-block;">Ver en YouTube ↗</a>
+                    </div>
+                </div>
+
+                <div class="tarjeta-destacada">
+                    <h3 class="subtitulo-color text-center">➕ Suma Diferente Denominador</h3>
+                    <div class="video-container">
+                        <iframe src="https://www.youtube-nocookie.com/embed/LVHo5xvsvO0" title="Suma Diferente Denominador" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                    </div>
+                    <div style="text-align: center; margin-top: 10px;">
+                        <a href="https://www.youtube.com/watch?v=LVHo5xvsvO0" target="_blank" rel="noopener noreferrer" class="btn" style="font-size: 13px; text-decoration: none; display: inline-block;">Ver en YouTube ↗</a>
+                    </div>
+                </div>
+
+                <div class="tarjeta-destacada">
+                    <h3 class="subtitulo-color text-center">➖ Resta Igual Denominador</h3>
+                    <div class="video-container">
+                        <iframe src="https://www.youtube-nocookie.com/embed/EgTV5pj6Ijg" title="Resta Igual Denominador" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                    </div>
+                    <div style="text-align: center; margin-top: 10px;">
+                        <a href="https://www.youtube.com/watch?v=EgTV5pj6Ijg" target="_blank" rel="noopener noreferrer" class="btn" style="font-size: 13px; text-decoration: none; display: inline-block;">Ver en YouTube ↗</a>
+                    </div>
+                </div>
+
+                <div class="tarjeta-destacada">
+                    <h3 class="subtitulo-color text-center">➖ Resta Diferente Denominador</h3>
+                    <div class="video-container">
+                        <iframe src="https://www.youtube-nocookie.com/embed/FRPijN0ie3U" title="Resta Diferente Denominador" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                    </div>
+                    <div style="text-align: center; margin-top: 10px;">
+                        <a href="https://www.youtube.com/watch?v=FRPijN0ie3U" target="_blank" rel="noopener noreferrer" class="btn" style="font-size: 13px; text-decoration: none; display: inline-block;">Ver en YouTube ↗</a>
+                    </div>
+                </div>
+
+                <div class="tarjeta-destacada">
+                    <h3 class="subtitulo-color text-center">✖️ Multiplicación</h3>
+                    <div class="video-container">
+                        <iframe src="https://www.youtube-nocookie.com/embed/-ytm1uOGOXk" title="Multiplicación de Fracciones" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                    </div>
+                    <div style="text-align: center; margin-top: 10px;">
+                        <a href="https://www.youtube.com/watch?v=-ytm1uOGOXk" target="_blank" rel="noopener noreferrer" class="btn" style="font-size: 13px; text-decoration: none; display: inline-block;">Ver en YouTube ↗</a>
+                    </div>
+                </div>
+
+                <div class="tarjeta-destacada">
+                    <h3 class="subtitulo-color text-center">➗ División</h3>
+                    <div class="video-container">
+                        <iframe src="https://www.youtube-nocookie.com/embed/4Q2lLy3pzrI" title="División de Fracciones" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                    </div>
+                    <div style="text-align: center; margin-top: 10px;">
+                        <a href="https://www.youtube.com/watch?v=4Q2lLy3pzrI" target="_blank" rel="noopener noreferrer" class="btn" style="font-size: 13px; text-decoration: none; display: inline-block;">Ver en YouTube ↗</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 8. ZONA DE JUEGOS Y RETOS -->
+        <section id="juegos">
+            <h1 class="titulo-flotante text-center">🎮 ¡Zona de Retos!</h1>
+            
+            <!-- Reto 1: Pizza -->
+            <div class="juego-card">
+                <h3>Reto 1: ¡El Maestro Pizzero! 🍕</h3>
+                <p>Haz clic en las rebanadas de pizza para colorearlas. Representa: <strong>3/4</strong></p>
+                <div class="pizza-container">
+                    <svg viewBox="0 0 100 100" class="pizza-svg">
+                        <path d="M50,50 L50,0 A50,50 0 0,1 100,50 Z" class="rebanada" onclick="pintarRebanada(this)"></path>
+                        <path d="M50,50 L100,50 A50,50 0 0,1 50,100 Z" class="rebanada" onclick="pintarRebanada(this)"></path>
+                        <path d="M50,50 L50,100 A50,50 0 0,1 0,50 Z" class="rebanada" onclick="pintarRebanada(this)"></path>
+                        <path d="M50,50 L0,50 A50,50 0 0,1 50,0 Z" class="rebanada" onclick="pintarRebanada(this)"></path>
+                    </svg>
+                </div>
+                <div style="text-align: center;">
+                    <button class="btn" onclick="verificarPizza()">¡Servir Pizza!</button>
+                </div>
+                <p id="resCajas" class="resultado text-center"></p>
+            </div>
+
+            <!-- Reto 2: Desafío Dinámico -->
+            <div class="juego-card mt-20">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <h3>Reto 2: Desafío Aleatorio ⚡</h3>
+                    <span id="nivel-etiqueta" style="background:#f39c12; color:white; padding:5px 15px; border-radius:15px; font-weight:bold;">Nivel 1</span>
+                </div>
+                <p>Resuelve la siguiente operación matemática:</p>
+                <strong id="ejercicio-dinamico" style="font-size: 38px; color: #8e44ad; display: block; margin: 15px 0; text-align: center;">...</strong>
+                
+                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px; justify-content: center;">
+                    <input type="text" id="respuesta1" placeholder="Ej: 5/8">
+                    <button class="btn-mic" onclick="activarMicrofono()" id="btn-mic" title="Dilo en voz alta (Ej: Tres cuartos)">🎤</button>
+                </div>
+                
+                <div style="text-align: center;">
+                    <button class="btn" onclick="verificarTexto()">Comprobar (+10 🪙)</button>
+                    <button class="btn btn-cerrar" onclick="generarNuevoReto()">Saltar Reto 🔄</button>
+                </div>
+                <p id="resTexto" class="resultado text-center"></p>
+            </div>
+
+            <!-- Misiones y Desafíos Externos (Wayground y Educaplay) -->
+            <div class="mt-30">
+                <h2 class="subtitulo-color text-center">🎯 Misiones y Desafíos en Línea</h2>
+                <p class="text-center">¡Pon a prueba tu agilidad mental con estos juegos y cuestionarios interactivos!</p>
+
+                <div class="grid-3 mt-20">
+                    <div class="tarjeta-tipo border-rojo" style="display: flex; flex-direction: column; justify-content: space-between;">
+                        <div>
+                            <div style="font-size: 40px; margin-bottom: 10px;">⚡</div>
+                            <h3>Quiz Interactivo de Fracciones</h3>
+                            <p style="font-size: 15px;">Demuestra tu rapidez respondiendo preguntas dinámicas en Wayground.</p>
+                        </div>
+                        <div style="margin-top: 15px;">
+                            <a href="https://wayground.com/activity/admin/quiz/6acffda75654dcd0ea14e6ac" target="_blank" rel="noopener noreferrer" class="btn" style="display: block; text-decoration: none; font-size: 15px; padding: 10px; background: #e74c3c;">
+                                ¡Jugar en Wayground! 🚀
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="tarjeta-tipo border-verde" style="display: flex; flex-direction: column; justify-content: space-between;">
+                        <div>
+                            <div style="font-size: 40px; margin-bottom: 10px;">🧩</div>
+                            <h3>Conocimiento sobre Fracciones</h3>
+                            <p style="font-size: 15px;">Actividad de Educaplay para reforzar conceptos básicos de numeradores y denominadores.</p>
+                        </div>
+                        <div style="margin-top: 15px;">
+                            <a href="https://es.educaplay.com/recursos-educativos/31064088-conocimiento_sobre_fracciones.html" target="_blank" rel="noopener noreferrer" class="btn" style="display: block; text-decoration: none; font-size: 15px; padding: 10px; background: #27ae60;">
+                                ¡Jugar en Educaplay! 🎮
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="tarjeta-tipo border-amarillo" style="display: flex; flex-direction: column; justify-content: space-between;">
+                        <div>
+                            <div style="font-size: 40px; margin-bottom: 10px;">🔍</div>
+                            <h3>Encuentra el...</h3>
+                            <p style="font-size: 15px;">Pon a prueba tu agudeza visual y encuentra los elementos fraccionarios correspondientes.</p>
+                        </div>
+                        <div style="margin-top: 15px;">
+                            <a href="https://es.educaplay.com/recursos-educativos/31065724-encuentra_el.html" target="_blank" rel="noopener noreferrer" class="btn" style="display: block; text-decoration: none; font-size: 15px; padding: 10px; background: #f39c12;">
+                                ¡Jugar en Educaplay! 🏆
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Área de Profesores / PDF -->
+            <div class="tarjeta-destacada" style="text-align: center; border-color: #3498db; margin-top: 30px;">
+                <h3>👨‍🏫 Área para Profesores / Tareas</h3>
+                <p>Genera una hoja con 10 ejercicios mezclados (sumas, restas, multiplicaciones y divisiones).</p>
+                <button class="btn" style="background: #e74c3c; width: 100%; font-size: 18px;" onclick="generarPDF()">🖨️ Descargar Hoja de Práctica (PDF)</button>
+            </div>
+        </section>
+
+        <!-- 9. ENCUESTA -->
+        <section id="encuesta">
+            <h1>📝 Cuéntanos tu opinión</h1>
+            <div class="tarjeta-destacada text-center">
+                <p><strong>¿Qué tan divertida te pareció la clase? (1 al 10)</strong></p>
+                <input type="text" id="calificacion" placeholder="Ej: 10" style="text-align: center;">
+                <br><br>
+                <button class="btn" onclick="enviarEncuesta()">Enviar Respuestas (+5 🪙)</button>
+                <p id="resultadoEncuesta" class="resultado"></p>
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
